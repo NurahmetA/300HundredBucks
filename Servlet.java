@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
 
-@WebServlet(name = "Servlet")
+@WebServlet(name = "servlets.Servlet")
 public class Servlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
