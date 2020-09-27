@@ -9,6 +9,11 @@
 <%@include file="component/header.jsp"%>
 <head>
     <link href="main.css" rel="stylesheet">
+    <style>
+        *{
+            margin:30px;
+        }
+    </style>
 </head>
 <h1>Welcome to File Manager</h1>
 <h3>Currently you are located here: <%=(String)request.getAttribute("currentLoc")%></h3>
@@ -92,5 +97,6 @@
             </div>
         </div>
     </form>
+<%@include file="component/footer.jsp"%>
 </body>
 </html>
