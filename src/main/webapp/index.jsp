@@ -8,7 +8,8 @@
 --%>
 <%@include file="component/header.jsp"%>
 <h1>Welcome to File Manager</h1>
-<h3>Currently you are located here: <%=(String)request.getAttribute("currentLoc")%></h3>
+<% String currentLoc = (String) request.getAttribute("currentLoc");%>
+<h3>Currently you are located here: <%=currentLoc.replace("/","\\")%></h3>
 <%!
     //Lists for files and folders
     ArrayList<File> files = null;
@@ -27,7 +28,7 @@
         <%out.println("-" + file.getName() + " " + file.length()/1024 + "KB \n");%>
     </a>
     &nbsp &nbsp &nbsp &nbsp
-    <a style = "margin_left:100px;" href="delete?filename=<%=filePath%>&folder=<%=(String)request.getAttribute("folder")%>%>">Delete</a><%
+    <a style = "margin_left:100px;" href="delete?filename=<%=filePath%>&folder=<%=(String)request.getAttribute("folder")%>%>">Delete</a><br><%
         }
     } else {
         out.println("There are no files");
@@ -43,11 +44,11 @@
                 String filePath = file.getAbsolutePath();
                 filePath = filePath.replace("\\", "/");
     %>
-    <a href="download?filename=<%=filePath%>&folder=<%=(String)request.getAttribute("folder")%>">
+    <a href="MainServlet?folder=<%=filePath.substring(16)%>">
         <%out.println("-" + file.getName() + " " + file.length()/1024 + "KB \n");%>
     </a>
     &nbsp &nbsp &nbsp &nbsp
-    <a style = "margin_left:100px;" href="delete?filename=<%=filePath%>&folder=<%=(String)request.getAttribute("folder")%>%>">Delete</a><%
+    <a style = "margin_left:100px;" href="delete?filename=<%=filePath%>&folder=<%=(String)request.getAttribute("folder")%>%>">Delete</a><br><%
         }
     } else {
         out.println("There are no files");
@@ -59,6 +60,10 @@
     <div class="form-group">
         <input type="file" class="form-control-file" id="exampleFormControlFile1" name="file">
         <input type="submit" class="btn btn-primary" value="Submit">
+        <input type="hidden" class="form-control-file" readonly name="folder" value="<%
+        if (request.getAttribute("folder") == null || request.getAttribute("folder").equals("null")){
+            out.print("");
+        }else out.print(request.getAttribute("folder"));%>">
     </div>
 </form>
 </body>

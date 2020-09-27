@@ -22,6 +22,7 @@ public class DeleteServlet extends HttpServlet {
         try {
             String folder = request.getParameter("folder");
             String file = request.getParameter("filename");
+            if (file.isEmpty()) throw new Exception("There is no file");
             File deleteDir = new File(file);
             if (deleteDir.exists()) {
                 deleteDir.delete();
