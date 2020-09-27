@@ -18,14 +18,16 @@
 <h5>
 <%
     files = (ArrayList<File>) request.getAttribute("fileList");
-    System.out.println(files.size());
     if (files != null) {
-        for (File file: files) {%>
-    <a href="download?filename=<%=file%>&folder=<%=(String)request.getAttribute("folder")%>">
+        for (File file: files) {
+            String filePath = file.getAbsolutePath();
+            filePath = filePath.replace("\\", "/");
+%>
+    <a href="download?filename=<%=filePath%>&folder=<%=(String)request.getAttribute("folder")%>">
         <%out.println("-" + file.getName() + " " + file.length()/1024 + "KB \n");%>
     </a>
     &nbsp &nbsp &nbsp &nbsp
-    <a style = "margin_left:100px;" href="delete?filename=<%=file%>&folder=<%= (String)request.getAttribute("folder")%>">Delete</a><%
+    <a style = "margin_left:100px;" href="delete?filename=<%=filePath%>&folder=<%=(String)request.getAttribute("folder")%>%>">Delete</a><%
         }
     } else {
         out.println("There are no files");
@@ -34,16 +36,34 @@
 </h5>
 <h3>Folders :</h3>
 <h5>
-<%
-    dirs = (ArrayList<File>) request.getAttribute("dirList");
-    if (dirs != null) {
-        for (File dir: dirs) {
-            out.println("-" + dir.getName() + " " + dir.length()/1024 + "KB \n");
+    <%
+        dirs = (ArrayList<File>) request.getAttribute("dirList");
+        if (dirs != null) {
+            for (File file: dirs) {
+                String filePath = file.getAbsolutePath();
+                filePath = filePath.replace("\\", "/");
+    %>
+    <a href="download?filename=<%=filePath%>&folder=<%=(String)request.getAttribute("folder")%>">
+        <%out.println("-" + file.getName() + " " + file.length()/1024 + "KB \n");%>
+    </a>
+    &nbsp &nbsp &nbsp &nbsp
+    <a style = "margin_left:100px;" href="delete?filename=<%=filePath%>&folder=<%=(String)request.getAttribute("folder")%>%>">Delete</a><%
         }
     } else {
-        out.println("There are no directories");
+        out.println("There are no files");
     }
 %>
 </h5>
+<h3>File Upload</h3>
+<form action="MainServlet" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="file">
+        <input type="text" class="form-control-file" readonly name="folder" value="<%
+        if (request.getAttribute("folder") == null || request.getAttribute("folder").equals("null")){
+            out.print("");
+        }else out.print(request.getAttribute("folder"));%>">
+        <input type="submit" class="btn btn-primary" value="Submit">
+    </div>
+</form>
 </body>
 </html>

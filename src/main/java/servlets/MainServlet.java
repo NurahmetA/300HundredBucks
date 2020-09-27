@@ -9,11 +9,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet
+@WebServlet("/MainServlet")
 @MultipartConfig
 public class MainServlet extends HttpServlet {
 
@@ -25,15 +26,29 @@ public class MainServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        String folder = request.getParameter("folder");
+        if (folder == null || folder.isEmpty() || folder.equals("null")){
+            folder = "";
+        }
+        String uploadPath = ROOT_DIRECTORY + "\\" + folder;
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists())
+            uploadDir.mkdirs();
+        for (Part part : request.getParts()) {
+            String fileName = part.getSubmittedFileName();
+            part.write(uploadPath + File.separator + fileName);
+        }
+        request.setAttribute("message", "File  has uploaded successfully!");
+        doGet(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String folder =request.getParameter("folder");
-        if (folder == null || folder.isEmpty()) {
+        if (folder == null || folder.isEmpty() || folder.equals("null")){
             folder = "";
         }
         String currentDirectory = ROOT_DIRECTORY + "\\" + folder;
+        System.out.println(currentDirectory);
         ArrayList<File> files =new ArrayList<>();
         ArrayList<File> dirs = new ArrayList<>();
         File dir = new File(currentDirectory);
