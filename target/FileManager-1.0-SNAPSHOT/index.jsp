@@ -6,15 +6,12 @@
   Time: 15:46
   To change this template use File | Settings | File Templates.
 --%>
+
 <%@include file="component/header.jsp"%>
 <head>
     <link href="main.css" rel="stylesheet">
-    <style>
-        *{
-            margin:30px;
-        }
-    </style>
 </head>
+<div class="main">
 <h1>Welcome to File Manager</h1>
 <h3>Currently you are located here: <%=(String)request.getAttribute("currentLoc")%></h3>
 <%!
@@ -83,7 +80,6 @@
         out.println("There are no files");
     }
 %>
-
 </h5>
 <h3>File Upload</h3>
     <form action="MainServlet" method="post" enctype="multipart/form-data">
@@ -97,6 +93,7 @@
             </div>
         </div>
     </form>
+</div>
 <%@include file="component/footer.jsp"%>
 </body>
 </html>
