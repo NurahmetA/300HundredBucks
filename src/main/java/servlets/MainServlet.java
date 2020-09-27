@@ -1,8 +1,5 @@
 package servlets;
 
-import models.Directory;
-import models.Files;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -25,6 +22,17 @@ public class MainServlet extends HttpServlet {
         ROOT_DIRECTORY =getServletContext().getInitParameter("root");
     }
 
+
+    private static String getSubmittedFileName(Part part) {
+        for (String cd : part.getHeader("content-disposition").split(";")) {
+            if (cd.trim().startsWith("filename")) {
+                String fileName = cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
+                return fileName.substring(fileName.lastIndexOf('/') + 1).substring(fileName.lastIndexOf('\\') + 1); // MSIE fix.
+            }
+        }
+        return null;
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String folder = request.getParameter("folder");
         if (folder == null || folder.isEmpty() || folder.equals("null")){
@@ -35,10 +43,9 @@ public class MainServlet extends HttpServlet {
         if (!uploadDir.exists())
             uploadDir.mkdirs();
         for (Part part : request.getParts()) {
-            String fileName = part.getSubmittedFileName();
+            String fileName = getSubmittedFileName(part);
             part.write(uploadPath + File.separator + fileName);
         }
-        request.setAttribute("message", "File  has uploaded successfully!");
         doGet(request, response);
     }
 
