@@ -9,6 +9,7 @@
 <%@include file="component/header.jsp"%>
 <head>
     <link href="main.css" rel="stylesheet">
+    <script src="jquery-3.5.1.min.js"></script>
 </head>
 <h1>Welcome to File Manager</h1>
 <h3>Currently you are located here: <%=(String)request.getAttribute("currentLoc")%></h3>
@@ -93,5 +94,11 @@
         </div>
     </form>
 <%@include file="component/footer.jsp"%>
+<script>
+    $(document).ready(function () {
+        $(".").
+    })
+</script>
 </body>
+
 </html>
