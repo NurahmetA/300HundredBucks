@@ -1,4 +1,5 @@
-<%@ page import="java.io.File" %><%--
+<%@ page import="java.io.File" %>
+<%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
   User: alemh
   Date: 24.09.2020
@@ -8,26 +9,41 @@
 <%@include file="component/header.jsp"%>
 <h1>Welcome to File Manager</h1>
 <h3>Currently you are located here: <%=(String)request.getAttribute("currentLoc")%></h3>
-<h3>Files:</h3>
-
-<%! File myDir = new File("C:\\File Manager"); %>
-<%
-    if(myDir.isDirectory())
-    {
-        // получаем все вложенные объекты в каталоге
-        for(File item : myDir.listFiles()){
+<%!
+    //Lists for files and folders
+    ArrayList<File> files = null;
+    ArrayList<File> dirs = null;
 %>
-<h5 style="color: lightseagreen"> - <%
-            if(item.isDirectory()){
-                out.println(item.getName() + "  \t Folder");
-            }
-            else{
-
-                out.println(item.getName() + "\t File");
-            }
+<h3>Files:</h3>
+<h5>
+<%
+    files = (ArrayList<File>) request.getAttribute("fileList");
+    System.out.println(files.size());
+    if (files != null) {
+        for (File file: files) {%>
+    <a href="download?filename=<%=file%>&folder=<%=(String)request.getAttribute("folder")%>">
+        <%out.println("-" + file.getName() + " " + file.length()/1024 + "KB \n");%>
+    </a>
+    &nbsp &nbsp &nbsp &nbsp
+    <a style = "margin_left:100px;" href="delete?filename=<%=file%>&folder=<%= (String)request.getAttribute("folder")%>">Delete</a><%
         }
-%> </h5> <%
+    } else {
+        out.println("There are no files");
     }
 %>
+</h5>
+<h3>Folders :</h3>
+<h5>
+<%
+    dirs = (ArrayList<File>) request.getAttribute("dirList");
+    if (dirs != null) {
+        for (File dir: dirs) {
+            out.println("-" + dir.getName() + " " + dir.length()/1024 + "KB \n");
+        }
+    } else {
+        out.println("There are no directories");
+    }
+%>
+</h5>
 </body>
 </html>
