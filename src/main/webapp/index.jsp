@@ -92,5 +92,6 @@
             </div>
         </div>
     </form>
+<%@include file="component/footer.jsp"%>
 </body>
 </html>
