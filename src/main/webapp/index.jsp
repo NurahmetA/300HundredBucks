@@ -58,10 +58,6 @@
 <form action="MainServlet" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <input type="file" class="form-control-file" id="exampleFormControlFile1" name="file">
-        <input type="text" class="form-control-file" readonly name="folder" value="<%
-        if (request.getAttribute("folder") == null || request.getAttribute("folder").equals("null")){
-            out.print("");
-        }else out.print(request.getAttribute("folder"));%>">
         <input type="submit" class="btn btn-primary" value="Submit">
     </div>
 </form>
