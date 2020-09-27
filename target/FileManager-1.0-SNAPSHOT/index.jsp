@@ -12,7 +12,10 @@
 --%>
 <%@include file="component/header.jsp"%>
 <h1>Welcome to File Manager</h1>
-<% String currentLoc = (String) request.getAttribute("currentLoc");%>
+<%
+    //The MainServlet is launched first to be initialized and find the Root Dir
+    String currentLoc = (String) request.getAttribute("currentLoc");
+%>
 <h3>Currently you are located here: <%=currentLoc.replace("/","\\")%></h3>
 <%!
     //Lists for files and folders
@@ -22,8 +25,10 @@
 <h3>Files:</h3>
 <h5>
 <%
+    //The List of Files has got from the MainServlet
     files = (ArrayList<File>) request.getAttribute("fileList");
     if (files != null) {
+        //ForEach loop to separate and output the files of the directory with Delete links
         for (File file: files) {
             String filePath = file.getAbsolutePath();
             filePath = filePath.replace("\\", "/");
@@ -39,12 +44,15 @@
     }
 %>
 </h5>
+
 <h3>Folders :</h3>
 <h5>
     <%
+        //The List of Files has got from the MainServlet
         dirs = (ArrayList<File>) request.getAttribute("dirList");
         if (dirs != null) {
             for (File file: dirs) {
+                //ForEach loop to separate and output the folders of the directory with Delete links
                 String filePath = file.getAbsolutePath();
                 filePath = filePath.replace("\\", "/");
     %>
@@ -59,6 +67,7 @@
     }
 %>
 </h5>
+<!--IN THIS SECTION A FILE UPLOAD FUNCTION IS REALISED-->
 <h3>File Upload</h3>
 <form action="MainServlet" method="post" enctype="multipart/form-data">
     <div class="form-group">
