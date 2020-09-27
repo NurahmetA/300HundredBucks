@@ -6,6 +6,7 @@
   Time: 15:46
   To change this template use File | Settings | File Templates.
 --%>
+
 <%@include file="component/header.jsp"%>
 <h1>Welcome to File Manager</h1>
 <h3>Currently you are located here: <%=(String)request.getAttribute("currentLoc")%></h3>
@@ -17,6 +18,7 @@
 <h3>Files:</h3>
 <h5>
 <%
+    // Comment by Lil Nasway
     files = (ArrayList<File>) request.getAttribute("fileList");
     if (files != null) {
         for (File file: files) {
