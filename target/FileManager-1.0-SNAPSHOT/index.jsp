@@ -70,23 +70,5 @@
         }else out.print(request.getAttribute("folder"));%>">
     </div>
 </form>
-<h3>Find File</h3>
-<input type="text" name="search">
-<%
-    String pattern = request.getParameter("search");
-    FileSystem fs = FileSystems.getDefault();
-    final PathMatcher matcher = fs.getPathMatcher("glob:" + pattern);
-    FileVisitor<Path> matcherVisitor = new SimpleFileVisitor<Path>() {
-        @Override
-        public FileVisitResult visitFile(Path file, BasicFileAttributes attribs) {
-            Path name = file.getFileName();
-            if (matcher.matches(name)) {
-                System.out.print(String.format("Found matched file: '%s'.%n", file));
-            }
-            return FileVisitResult.CONTINUE;
-        }
-    };
-    Files.walkFileTree(Paths.get(currentLoc), matcherVisitor);
-%>
 </body>
 </html>
