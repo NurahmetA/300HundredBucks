@@ -13,7 +13,6 @@ import java.io.*;
 @MultipartConfig
 public class DownloadServlet extends HttpServlet {
 
-    static String ROOT_DIRECTORY;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

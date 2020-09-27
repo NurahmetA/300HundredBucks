@@ -1,5 +1,9 @@
 <%@ page import="java.io.File" %>
-<%@ page import="java.util.ArrayList" %><%--
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="java.util.regex.Matcher" %>
+<%@ page import="java.nio.file.*" %>
+<%@ page import="java.nio.file.attribute.BasicFileAttributes" %><%--
   Created by IntelliJ IDEA.
   User: alemh
   Date: 24.09.2020
@@ -66,5 +70,23 @@
         }else out.print(request.getAttribute("folder"));%>">
     </div>
 </form>
+<h3>Find File</h3>
+<input type="text" name="search">
+<%
+    String pattern = request.getParameter("search");
+    FileSystem fs = FileSystems.getDefault();
+    final PathMatcher matcher = fs.getPathMatcher("glob:" + pattern);
+    FileVisitor<Path> matcherVisitor = new SimpleFileVisitor<Path>() {
+        @Override
+        public FileVisitResult visitFile(Path file, BasicFileAttributes attribs) {
+            Path name = file.getFileName();
+            if (matcher.matches(name)) {
+                System.out.print(String.format("Found matched file: '%s'.%n", file));
+            }
+            return FileVisitResult.CONTINUE;
+        }
+    };
+    Files.walkFileTree(Paths.get(currentLoc), matcherVisitor);
+%>
 </body>
 </html>

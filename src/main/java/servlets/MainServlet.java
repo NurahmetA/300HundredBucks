@@ -55,7 +55,6 @@ public class MainServlet extends HttpServlet {
             folder = "";
         }
         String currentDirectory = ROOT_DIRECTORY + "\\" + folder;
-        System.out.println(currentDirectory);
         ArrayList<File> files =new ArrayList<>();
         ArrayList<File> dirs = new ArrayList<>();
         File dir = new File(currentDirectory);
