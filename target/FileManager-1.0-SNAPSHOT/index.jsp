@@ -10,6 +10,7 @@
 <%@include file="component/header.jsp"%>
 <head>
     <link href="main.css" rel="stylesheet">
+    <script src="jquery-3.5.1.min.js"></script>
 </head>
 <div class="main">
 <h1>Welcome to File Manager</h1>
@@ -19,7 +20,20 @@
     ArrayList<File> files = null;
     ArrayList<File> dirs = null;
 %>
-<h3>Files:</h3>
+   <br>
+    <input style = "background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  background-color: #555555;" id = "button" type = "button" value = "Show Content">
+    <br><br>
+<h3 class = "table">Files:</h3>
 <table class="table">
     <thead class="thead-dark">
     <tr>
@@ -69,7 +83,8 @@
                 String filePath = file.getAbsolutePath();
                 filePath = filePath.replace("\\", "/");
     %>
-<h3>Folders :</h3>
+<h3 class = "table">Folders :</h3>
+
     <table class="table">
         <thead class="thead-dark">
         <tr>
@@ -95,6 +110,7 @@
     }
 %>
     </table>
+    <br> <br>
 <h3>File Upload</h3>
     <form action="MainServlet" method="post" enctype="multipart/form-data">
         <div class="input-group">
@@ -109,5 +125,16 @@
     </form>
 </div>
 <%@include file="component/footer.jsp"%>
+<script>
+$(document).ready(function () {
+    $("#button").click(function () {
+        $(".table").toggle(
+            function(){$(".table").css({"display": "none"});},
+            function(){$(".table").css({"display": "block"});},
+        )
+    })
+})
+</script>
 </body>
+
 </html>
