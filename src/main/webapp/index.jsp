@@ -162,7 +162,6 @@
         <%
             System.out.println(request.getAttribute("message"));
             if (request.getAttribute("message") == null
-                    || request.getAttribute("message") == "unsucess"
                     || request.getAttribute("message").equals("null")) {
             } else if (request.getAttribute("message") == "success"){
                 File file = (File) request.getAttribute("foundFile");
@@ -172,7 +171,9 @@
     <a href="download?filename=<%=searchFilePath%>&folder=<%=(String)request.getAttribute("folder")%>">
         <%out.println(file.getName());%>
     </a> <br>
-        <%  }
+        <%  } else {
+                %> File Not Found <%
+        }
         %>
 
     <%@include file="component/footer.jsp"%>
