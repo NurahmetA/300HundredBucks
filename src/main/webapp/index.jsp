@@ -98,14 +98,22 @@
                   <td>There are no files!</td>
             <%}%>
     </table>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('input[type="file"]').change(function(e){
+                var fileName = e.target.files[0].name;
+                alert('The file "' + fileName +  '" has been selected.');
+            });
+        });
+    </script>
 <h3>File Upload</h3>
 <form action="MainServlet" method="post" enctype="multipart/form-data">
     <div class="input-group">
-
         <div class="input-group">
             <div class="custom-file">
                 <input type="file" class="custom-file-input" id="inputGroupFile04" name="file">
-                <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                <label class="custom-file-label" for="inputGroupFile04">Choose File</label>
             </div>
             <div class="input-group-append">
                 <input type="submit" class="btn btn-outline-secondary" value="Submit">
