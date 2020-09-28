@@ -21,17 +21,7 @@
     ArrayList<File> dirs = null;
 %>
     <br>
-    <input style = "background-color: #4CAF50; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  background-color: #555555;" id = "button" type = "button" value = "Show Content">
+    <input class="btn btn-outline-dark btn-lg" id = "button" type = "button" value = "Show Content">
     <br><br>
     <h3 class = "table">Files:</h3>
     <table class="table">
@@ -85,7 +75,7 @@
     %>
     <h3 class = "table">Folders :</h3>
 
-    <table class="table">
+    <table class="table table-striped">
         <thead class="thead-dark">
         <tr>
             <th scope="col">#</th>
@@ -104,12 +94,10 @@
         </tr>
         <%
                 }
-            } else {
-                out.println("There are no files");
-            }
-        %>
+            } else {%>
+                  <td>There are no files!</td>
+            <%}%>
     </table>
-    <br> <br>
 <h3>File Upload</h3>
 <form action="MainServlet" method="post" enctype="multipart/form-data">
     <div class="input-group">

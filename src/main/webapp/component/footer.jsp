@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col-sm-12 col-md-6">
                 <h6>About</h6>
-                <p class="justify">BOYS OF THE GYM is a legendary team of AITU. This team is everytime working hard for satisfy all requirements.</p>
+                <p class="justify">BOYS OF THE GYM is a legendary team of AITU. This team works hard every time for satisfy all requirements.</p>
             </div>
             <div class="col-xs-6 col-md-3">
                 <h6>Members</h6>
