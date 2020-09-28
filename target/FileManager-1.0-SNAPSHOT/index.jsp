@@ -21,10 +21,10 @@
     ArrayList<File> dirs = null;
 %>
     <br>
-    <input class="btn btn-outline-dark btn-lg" id = "button" type = "button" value = "Show Content">
+    <input class="btn btn-outline-dark btn-lg" style = "display:block" id = "button" type = "button" value = "Hide Content">
     <br><br>
-    <h3 class = "table">Files:</h3>
-    <table class="table">
+    <h3 class = "table" style = "display:block">Files:</h3>
+    <table class="table" style = "display:block">
         <thead class="thead-dark">
         <tr>
             <th scope="col">#</th>
@@ -73,9 +73,9 @@
                 String filePath = file.getAbsolutePath();
                 filePath = filePath.replace("\\", "/");
     %>
-    <h3 class = "table">Folders :</h3>
+    <h3 style = "display:block" class = "table">Folders :</h3>
 
-    <table class="table table-striped">
+    <table style = "display:block" class="table table-striped">
         <thead class="thead-dark">
         <tr>
             <th scope="col">#</th>
@@ -128,11 +128,18 @@
     <%@include file="component/footer.jsp"%>
     <script>
         $(document).ready(function () {
+            flag = true;
             $("#button").click(function () {
-                $(".table").toggle(
-                    function(){$(".table").css({"display": "none"});},
-                    function(){$(".table").css({"display": "block"});},
-                )
+                if(flag === true) {
+                    $(".table").css({"display": "none"});
+                    $("#button").prop("value", "Show Content");
+                    flag = false;
+                } else {
+                    $(".table").css({"display": "block"});
+                    $("#button").prop("value", "Hide Content");
+                    flag = true;
+                }
+
             })
         })
     </script>
