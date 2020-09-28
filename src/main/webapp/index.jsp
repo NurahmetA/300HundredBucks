@@ -34,7 +34,7 @@
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
-  background-color: #555555;" id = "button" type = "button" value = "Show Content">
+  background-color: #555555;" id = "button" type = "button" value = "Hide Content">
     <br><br>
 
     <!--Start of the Files Table -->
@@ -122,6 +122,15 @@
     <br> <br>
 
     <!-- A Section with File Upload Function -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('input[type="file"]').change(function(e){
+                var fileName = e.target.files[0].name;
+                alert('The file "' + fileName +  '" has been selected.');
+            });
+        });
+    </script>
     <h3>File Upload</h3>
     <form action="MainServlet" method="post" enctype="multipart/form-data">
         <div class="input-group">
@@ -143,17 +152,45 @@
     </form>
     <!-- The End of the Section-->
 
+    <h1>Search a File</h1>
+    <form action="search" method="post" enctype="multipart/form-data">
+        <div class="input-group">
+            <input type="text" name="search" placeholder="Name of the file">
+            <input type="submit" class="btn btn-outline-secondary" value="Submit">
+        </div>
+    </form>
+        <%
+            System.out.println(request.getAttribute("message"));
+            if (request.getAttribute("message") == null
+                    || request.getAttribute("message") == "unsucess"
+                    || request.getAttribute("message").equals("null")) {
+            } else if (request.getAttribute("message") == "success"){
+                File file = (File) request.getAttribute("foundFile");
+                String searchFilePath = file.getAbsolutePath();
+                System.out.println(file.getName());
+                %>
+    <a href="download?filename=<%=searchFilePath%>&folder=<%=(String)request.getAttribute("folder")%>">
+        <%out.println(file.getName());%>
+    </a> <br>
+        <%  }
+        %>
 
     <%@include file="component/footer.jsp"%>
 
     <!-- Some JavaScript -->
     <script>
         $(document).ready(function () {
+            flag = true;
             $("#button").click(function () {
-                $(".table").toggle(
-                    function(){$(".table").css({"display": "none"});},
-                    function(){$(".table").css({"display": "block"});},
-                )
+                if(flag === true) {
+                    $(".table").css({"display": "none"});
+                    $("#button").prop("value", "Show Content");
+                    flag = false;
+                } else {
+                    $(".table").css({"display": "block"});
+                    $("#button").prop("value", "Hide Content");
+                    flag = true;
+                }
             })
         })
     </script>

@@ -13,13 +13,16 @@
 </head>
 <body>
 <div class="main">
+
     <h1>Welcome to File Manager</h1>
     <h3>Currently you are located here: <%=(String)request.getAttribute("currentLoc")%></h3>
-        <%!
+
+    <%!
     //Lists for files and folders
     ArrayList<File> files = null;
     ArrayList<File> dirs = null;
-%>
+    %>
+
     <br>
     <input style = "background-color: #4CAF50; /* Green */
   border: none;
@@ -31,8 +34,10 @@
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
-  background-color: #555555;" id = "button" type = "button" value = "Show Content">
+  background-color: #555555;" id = "button" type = "button" value = "Hide Content">
     <br><br>
+
+    <!--Start of the Files Table -->
     <h3 class = "table">Files:</h3>
     <table class="table">
         <thead class="thead-dark">
@@ -44,6 +49,7 @@
         </tr>
         </thead>
         <%
+            //Table with files that were output using ForEach Cycle
             int count = 1;
             files = (ArrayList<File>) request.getAttribute("fileList");
             if (files != null) {
@@ -74,8 +80,12 @@
             }
         %>
     </table>
+    <!-- End of the Files Table -->
+
+    <!-- Start of the Folders Table -->
     <h3 class = "table">Folders :</h3>
         <%
+        //As the files table folder table is outputed using ForEach Cycle
         int count2 = 1;
         dirs = (ArrayList<File>) request.getAttribute("dirList");
         if (dirs != null) {
@@ -107,7 +117,20 @@
             }
         %>
     </table>
+    <!-- End of the Folders Table -->
+
     <br> <br>
+
+    <!-- A Section with File Upload Function -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('input[type="file"]').change(function(e){
+                var fileName = e.target.files[0].name;
+                alert('The file "' + fileName +  '" has been selected.');
+            });
+        });
+    </script>
     <h3>File Upload</h3>
     <form action="MainServlet" method="post" enctype="multipart/form-data">
         <div class="input-group">
@@ -127,36 +150,47 @@
             }else out.print(request.getAttribute("folder"));%>">
         </div>
     </form>
-    <h3>File Search</h3>
-    <form action="FindServlet?folder=<%=request.getAttribute("folder")%>">
-        <div class="input-group">
-            <input type="text" name="search" placeholder="Write a file name">
-            <input type="submit" class = "btn btn-outline-secondary" value="Search">
-        </div>
-        <%
-            String message = (String) request.getAttribute("message");
-            File file = (File) request.getAttribute("file");
-            String filePath = file.getAbsolutePath();
-            if (message == null || message == "null") {
+    <!-- The End of the Section-->
 
-            } else if (message == "success") {
-                %>
-            <a href="download?filename=<%=filePath%>&folder=<%=(String)request.getAttribute("folder")%>">
-                <%out.println(file.getName());%>
-            </a>
+    <h1>Search a File</h1>
+    <form action="search" method="post" enctype="multipart/form-data">
+        <div class="input-group">
+            <input type="text" name="search" placeholder="Name of the file">
+            <input type="submit" class="btn btn-outline-secondary" value="Submit">
+        </div>
+    </form>
         <%
-            }
+            System.out.println(request.getAttribute("message"));
+            if (request.getAttribute("message") == null
+                    || request.getAttribute("message") == "unsucess"
+                    || request.getAttribute("message").equals("null")) {
+            } else if (request.getAttribute("message") == "success"){
+                File file = (File) request.getAttribute("foundFile");
+                String searchFilePath = file.getAbsolutePath();
+                System.out.println(file.getName());
+                %>
+    <a href="download?filename=<%=searchFilePath%>&folder=<%=(String)request.getAttribute("folder")%>">
+        <%out.println(file.getName());%>
+    </a> <br>
+        <%  }
         %>
 
-    </form>
     <%@include file="component/footer.jsp"%>
+
+    <!-- Some JavaScript -->
     <script>
         $(document).ready(function () {
+            flag = true;
             $("#button").click(function () {
-                $(".table").toggle(
-                    function(){$(".table").css({"display": "none"});},
-                    function(){$(".table").css({"display": "block"});},
-                )
+                if(flag === true) {
+                    $(".table").css({"display": "none"});
+                    $("#button").prop("value", "Show Content");
+                    flag = false;
+                } else {
+                    $(".table").css({"display": "block"});
+                    $("#button").prop("value", "Hide Content");
+                    flag = true;
+                }
             })
         })
     </script>

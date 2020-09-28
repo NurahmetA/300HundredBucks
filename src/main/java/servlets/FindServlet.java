@@ -25,29 +25,35 @@ public class FindServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String fileName = (String) request.getAttribute("search");
+        String fileName = request.getParameter("search");
         String folder = request.getParameter("folder");
-
         if (folder == null || folder.isEmpty() || folder.equals("null")){
             folder = "";
         }
 
-        Pattern myPattern = Pattern.compile("[a-zA-Z0-9]\\.*");
-        Matcher matcher = myPattern.matcher(ROOT_DIRECTORY + "\\" + folder + "\\" + fileName);
+        Pattern myPattern = Pattern.compile(fileName + ".*");
+        Matcher matcher = null;
+        boolean flag = false;
+        File theFile = null;
+        File directoryOfFile = new File(ROOT_DIRECTORY + "\\" + folder);
 
-        try {
-            if(matcher.find()) {
-                File theFile = new File(ROOT_DIRECTORY + "\\" + folder + "\\" + fileName);
-                request.setAttribute("message", "success");
-                request.setAttribute("file", theFile);
-            } else {
-                request.setAttribute("message", "unsucess");
+        for (File aFile: directoryOfFile.listFiles()
+             ) {
+            if (!aFile.isDirectory()) {
+                matcher = myPattern.matcher(aFile.getAbsolutePath());
+                if (matcher.find()) {
+                    theFile= new File(ROOT_DIRECTORY + "\\" + folder + "\\" + aFile.getName());
+                    flag = true;
+                }
             }
-            response.sendRedirect("MainServlet?folder=" + folder);
-        } catch (FileNotFoundException e) {
-            request.setAttribute("error", "Some problems may occur in search");
-            request.getRequestDispatcher("errorPage.jsp").forward(request, response);
         }
-    }
+        if (flag) {
+            request.setAttribute("message", "success");
+            request.setAttribute("foundFile", theFile);
+        } else {
+            request.setAttribute("message", "unsuccess");
+        }
+        request.getRequestDispatcher("MainServlet?folder=" + folder).forward(request, response);
 
+    }
 }
