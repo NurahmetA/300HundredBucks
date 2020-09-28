@@ -15,7 +15,12 @@
 <div class="main">
 
     <h1>Welcome to File Manager</h1>
-    <h3>Currently you are located here: <%=(String)request.getAttribute("currentLoc")%></h3>
+    <% String myLoc = (String)request.getAttribute("currentLoc");
+    System.out.println(myLoc);
+    myLoc = myLoc.replace("\\", "/");
+    System.out.println(myLoc);
+    %>
+    <h3>Currently you are located here: <%=myLoc%></h3>
 
     <%!
     //Lists for files and folders
@@ -45,7 +50,7 @@
             <th scope="col">#</th>
             <th scope="col">File Name</th>
             <th scope="col">File Size</th>
-            <th scope="col">Delete</th>
+            <th scope="col"><D></D>elete</th>
         </tr>
         </thead>
         <%
@@ -84,15 +89,6 @@
 
     <!-- Start of the Folders Table -->
     <h3 class = "table">Folders :</h3>
-        <%
-        //As the files table folder table is outputed using ForEach Cycle
-        int count2 = 1;
-        dirs = (ArrayList<File>) request.getAttribute("dirList");
-        if (dirs != null) {
-            for (File file: dirs) {
-                String filePath = file.getAbsolutePath();
-                filePath = filePath.replace("\\", "/");
-    %>
     <table class="table">
         <thead class="thead-dark">
         <tr>
@@ -102,9 +98,18 @@
             <th scope="col">Delete</th>
         </tr>
         </thead>
+        <%
+        //As the files table folder table is outputed using ForEach Cycle
+        int count2 = 1;
+        dirs = (ArrayList<File>) request.getAttribute("dirList");
+        if (dirs != null) {
+            for (File file: dirs) {
+                String filePath = file.getAbsolutePath();
+                filePath = filePath.replace("\\", "/");
+    %>
         <tr>
             <td><%=count2++%></td>
-            <td> <a class="mb-0" href="MainServlet?folder=<%=filePath.substring(16)%>">
+            <td> <a class="mb-0" href="MainServlet?folder=<%=filePath.substring(16)%>/">
                 <%out.println(file.getName());%>
             </a></td>
             <td><%=file.length()/1024 + "KB \n"%></td>

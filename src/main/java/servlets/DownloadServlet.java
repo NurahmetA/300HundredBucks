@@ -19,10 +19,11 @@ public class DownloadServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // reads input file from an absolute path1
+
         String folder = request.getParameter("folder");
         String file = request.getParameter("filename");
         File downloadFile = new File(file);
+
         // obtains ServletContext
         ServletContext context = getServletContext();
 
@@ -42,7 +43,7 @@ public class DownloadServlet extends HttpServlet {
         String headerValue = String.format("attachment; filename=\"%s\"", downloadFile.getName());
         response.setHeader(headerKey, headerValue);
 
-        // obtains response's output stream
+        // creates response's output stream
         FileInputStream inStream = new FileInputStream(downloadFile);
         OutputStream outStream = response.getOutputStream();
 

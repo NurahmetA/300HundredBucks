@@ -39,9 +39,6 @@ public class MainServlet extends HttpServlet {
             folder = "";
         }
         String uploadPath = ROOT_DIRECTORY + "\\" + folder;
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists())
-            uploadDir.mkdirs();
         for (Part part : request.getParts()) {
             String fileName = getSubmittedFileName(part);
             part.write(uploadPath + File.separator + fileName);
