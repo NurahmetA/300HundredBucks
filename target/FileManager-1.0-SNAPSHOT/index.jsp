@@ -67,7 +67,6 @@
             <td><a style="margin_left:100px;" href="delete?filename=<%=filePath%>&folder=<%=(String)request.getAttribute("folder")%>%>">Delete</a></td>
         </tr>
         </tbody>
-        &nbsp &nbsp &nbsp &nbsp
         <%
                 }
             } else {
@@ -75,6 +74,7 @@
             }
         %>
     </table>
+    <h3 class = "table">Folders :</h3>
         <%
         int count2 = 1;
         dirs = (ArrayList<File>) request.getAttribute("dirList");
@@ -83,8 +83,6 @@
                 String filePath = file.getAbsolutePath();
                 filePath = filePath.replace("\\", "/");
     %>
-    <h3 class = "table">Folders :</h3>
-
     <table class="table">
         <thead class="thead-dark">
         <tr>
@@ -102,7 +100,6 @@
             <td><%=file.length()/1024 + "KB \n"%></td>
             <td><a style = "margin_left:100px;" href="delete?filename=<%=filePath%>&folder=<%=(String)request.getAttribute("folder")%>%>">Delete</a></td>
         </tr>
-        &nbsp &nbsp &nbsp &nbsp
         <%
                 }
             } else {
@@ -111,25 +108,47 @@
         %>
     </table>
     <br> <br>
-<h3>File Upload</h3>
-<form action="MainServlet" method="post" enctype="multipart/form-data">
-    <div class="input-group">
-
+    <h3>File Upload</h3>
+    <form action="MainServlet" method="post" enctype="multipart/form-data">
         <div class="input-group">
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="inputGroupFile04" name="file">
-                <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+
+            <div class="input-group">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="inputGroupFile04" name="file">
+                    <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                </div>
+                <div class="input-group-append">
+                    <input type="submit" class="btn btn-outline-secondary" value="Submit">
+                </div>
             </div>
-            <div class="input-group-append">
-                <input type="submit" class="btn btn-outline-secondary" value="Submit">
-            </div>
+            <input type="hidden" class="form-control-file" readonly name="folder" value="<%
+            if (request.getAttribute("folder") == null || request.getAttribute("folder").equals("null")){
+                out.print("");
+            }else out.print(request.getAttribute("folder"));%>">
         </div>
-        <input type="hidden" class="form-control-file" readonly name="folder" value="<%
-        if (request.getAttribute("folder") == null || request.getAttribute("folder").equals("null")){
-            out.print("");
-        }else out.print(request.getAttribute("folder"));%>">
-    </div>
-</form>
+    </form>
+    <h3>File Search</h3>
+    <form action="FindServlet?folder=<%=request.getAttribute("folder")%>">
+        <div class="input-group">
+            <input type="text" name="search" placeholder="Write a file name">
+            <input type="submit" class = "btn btn-outline-secondary" value="Search">
+        </div>
+        <%
+            String message = (String) request.getAttribute("message");
+            File file = (File) request.getAttribute("file");
+            String filePath = file.getAbsolutePath();
+            if (message == null || message == "null") {
+
+            } else if (message == "success") {
+                %>
+            <a href="download?filename=<%=filePath%>&folder=<%=(String)request.getAttribute("folder")%>">
+                <%out.println(file.getName());%>
+            </a>
+        <%
+            }
+        %>
+
+    </form>
     <%@include file="component/footer.jsp"%>
     <script>
         $(document).ready(function () {

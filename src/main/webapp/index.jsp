@@ -13,13 +13,16 @@
 </head>
 <body>
 <div class="main">
+
     <h1>Welcome to File Manager</h1>
     <h3>Currently you are located here: <%=(String)request.getAttribute("currentLoc")%></h3>
-        <%!
+
+    <%!
     //Lists for files and folders
     ArrayList<File> files = null;
     ArrayList<File> dirs = null;
-%>
+    %>
+
     <br>
     <input style = "background-color: #4CAF50; /* Green */
   border: none;
@@ -33,6 +36,8 @@
   cursor: pointer;
   background-color: #555555;" id = "button" type = "button" value = "Show Content">
     <br><br>
+
+    <!--Start of the Files Table -->
     <h3 class = "table">Files:</h3>
     <table class="table">
         <thead class="thead-dark">
@@ -44,6 +49,7 @@
         </tr>
         </thead>
         <%
+            //Table with files that were output using ForEach Cycle
             int count = 1;
             files = (ArrayList<File>) request.getAttribute("fileList");
             if (files != null) {
@@ -67,7 +73,6 @@
             <td><a style="margin_left:100px;" href="delete?filename=<%=filePath%>&folder=<%=(String)request.getAttribute("folder")%>%>">Delete</a></td>
         </tr>
         </tbody>
-        &nbsp &nbsp &nbsp &nbsp
         <%
                 }
             } else {
@@ -75,7 +80,12 @@
             }
         %>
     </table>
+    <!-- End of the Files Table -->
+
+    <!-- Start of the Folders Table -->
+    <h3 class = "table">Folders :</h3>
         <%
+        //As the files table folder table is outputed using ForEach Cycle
         int count2 = 1;
         dirs = (ArrayList<File>) request.getAttribute("dirList");
         if (dirs != null) {
@@ -83,8 +93,6 @@
                 String filePath = file.getAbsolutePath();
                 filePath = filePath.replace("\\", "/");
     %>
-    <h3 class = "table">Folders :</h3>
-
     <table class="table">
         <thead class="thead-dark">
         <tr>
@@ -109,27 +117,36 @@
             }
         %>
     </table>
-    <br> <br>
-<h3>File Upload</h3>
-<form action="MainServlet" method="post" enctype="multipart/form-data">
-    <div class="input-group">
+    <!-- End of the Folders Table -->
 
+    <br> <br>
+
+    <!-- A Section with File Upload Function -->
+    <h3>File Upload</h3>
+    <form action="MainServlet" method="post" enctype="multipart/form-data">
         <div class="input-group">
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="inputGroupFile04" name="file">
-                <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+
+            <div class="input-group">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="inputGroupFile04" name="file">
+                    <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                </div>
+                <div class="input-group-append">
+                    <input type="submit" class="btn btn-outline-secondary" value="Submit">
+                </div>
             </div>
-            <div class="input-group-append">
-                <input type="submit" class="btn btn-outline-secondary" value="Submit">
-            </div>
+            <input type="hidden" class="form-control-file" readonly name="folder" value="<%
+            if (request.getAttribute("folder") == null || request.getAttribute("folder").equals("null")){
+                out.print("");
+            }else out.print(request.getAttribute("folder"));%>">
         </div>
-        <input type="hidden" class="form-control-file" readonly name="folder" value="<%
-        if (request.getAttribute("folder") == null || request.getAttribute("folder").equals("null")){
-            out.print("");
-        }else out.print(request.getAttribute("folder"));%>">
-    </div>
-</form>
+    </form>
+    <!-- The End of the Section-->
+
+
     <%@include file="component/footer.jsp"%>
+
+    <!-- Some JavaScript -->
     <script>
         $(document).ready(function () {
             $("#button").click(function () {
